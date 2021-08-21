@@ -54,7 +54,7 @@ public class ProductController {
 	}
 
 	@PostMapping("/shop/products")
-	public ResponseEntity<Product> createTodo(@RequestBody Product product) {
+	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
 		
 		Product createdProduct= productJpaRepository.save(product);
 		
