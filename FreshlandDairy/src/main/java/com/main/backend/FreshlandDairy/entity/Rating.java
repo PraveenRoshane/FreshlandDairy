@@ -27,7 +27,6 @@ public class Rating {
 	
 	
 	@Column(name = "DatePost" )
-	@JsonFormat(pattern = "yyyy-mm-dd", shape = JsonFormat.Shape.STRING)
 	private Date DatePost;
 	
 	@Column(name = "Rating" )
