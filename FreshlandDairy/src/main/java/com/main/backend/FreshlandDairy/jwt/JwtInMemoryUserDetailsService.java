@@ -9,14 +9,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class JwtInMemoryUserDetailsService implements UserDetailsService {
 
   static List<JwtUserDetails> inMemoryUserList = new ArrayList<>();
 
   static {
-    inMemoryUserList.add(new JwtUserDetails(1L, "in28minutes",
-        "$2a$10$3zHzb.Npv1hfZbLEU5qsdOju/tk2je6W6PnNnY.c1ujWPcZh4PL6e", "ROLE_USER_2"));
+	  inMemoryUserList.add(new JwtUserDetails(1L, "in28minutes",
+				"$2a$10$3zHzb.Npv1hfZbLEU5qsdOju/tk2je6W6PnNnY.c1ujWPcZh4PL6e", "ROLE_USER_2"));
+		inMemoryUserList.add(new JwtUserDetails(1L, "Chamal",
+				"$2a$10$1zxhFJI0TyRBCB9MaVb75.R9p.I3VJmHPQaklA8nW3h/eQvvAcBe2", "ROLE_USER_2"));
   }
 
   @Override

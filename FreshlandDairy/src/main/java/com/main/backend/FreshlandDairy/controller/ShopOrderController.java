@@ -1,6 +1,5 @@
 package com.main.backend.FreshlandDairy.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.main.backend.FreshlandDairy.entity.ShopOrder;
 import com.main.backend.FreshlandDairy.repository.ShopOrderRepository;
 
@@ -52,14 +50,15 @@ public class ShopOrderController {
 	}
 
 	@PostMapping("/shop-order/order")
-	public ResponseEntity<ShopOrder> createOrder(@RequestBody ShopOrder order) {
+	public ShopOrder createOrder(@RequestBody ShopOrder order) {
 		
 		ShopOrder NewOrder= ShopOrderRepository.save(order);
 		
-		URI Uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(NewOrder.getTransactionID())
-				.toUri();
-
-		return ResponseEntity.created(Uri).build();
+//		URI Uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(NewOrder.getTransactionID())
+//				.toUri();
+//		return ResponseEntity.created(Uri).build();
+		
+		return NewOrder;
 	}
 
 }
