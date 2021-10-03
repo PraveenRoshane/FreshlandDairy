@@ -53,11 +53,6 @@ public class ShopOrderController {
 	public ShopOrder createOrder(@RequestBody ShopOrder order) {
 		
 		ShopOrder NewOrder= ShopOrderRepository.save(order);
-		
-//		URI Uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(NewOrder.getTransactionID())
-//				.toUri();
-//		return ResponseEntity.created(Uri).build();
-		
 		return NewOrder;
 	}
 
