@@ -68,17 +68,7 @@ public class AccountContoller {
 		
 	}
 	
-	/*
-	@GetMapping("/datesearch/{month}/{year}")
-	public List <Account> searchbydate(@PathVariable String month, @PathVariable Long year) {
-		
-		return accountripositary.findBydate(month, year);
-	}
 	
-	@GetMapping("/getsum/{month}/{year}")
-	public Double getSum(@PathVariable String month, @PathVariable Long year) {
-		return accountripositary.getSum(month, year);
-	}*/
 	@GetMapping("/getreportobjects/{accountType}/{month}/{year}")
 	public List <Account> searchbydate(@PathVariable String accountType, @PathVariable String month, @PathVariable Long year) {
 		//return accountripositary.findBydate(month, year);
@@ -89,5 +79,35 @@ public class AccountContoller {
 	public double getSum(@PathVariable String accountType, @PathVariable String month, @PathVariable Long year) {
 		//return accountripositary.getSum(month, year);
 		return accountripositary.getSum(accountType, month, year);
+	}
+	
+	
+	
+	
+	@GetMapping("/makesalaryaccount/{month}/{year}")
+	public Account searchbydate(@PathVariable String month, @PathVariable Long year) {
+		
+		int countcheching = accountripositary.searchsalarycount(month, year, "salary");
+		
+		Account existinAccount = new Account();
+		
+		double total = accountripositary.totalsalarySum(month, year);
+		double epf = accountripositary.epfSum(month, year);
+		double etf = accountripositary.etfSum(month, year);
+		
+		existinAccount.setAccountType("Expence");
+		existinAccount.setAmount(total-epf-etf);
+		existinAccount.setDepartment("salary");
+		existinAccount.setMonth(month);
+		existinAccount.setYear(year);
+		
+		if ((countcheching <1)&&(total != 0)) {
+			
+		accountripositary.save(existinAccount);
+			
+		}
+		
+		
+		return existinAccount;
 	}
 }

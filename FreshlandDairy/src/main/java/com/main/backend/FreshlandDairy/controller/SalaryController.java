@@ -46,7 +46,20 @@ public class SalaryController {
 	
 	@PostMapping("")
 	public Salary createSalary ( @RequestBody Salary salary){
-		return salaryripositary.save(salary);
+		Salary existinSalary = new Salary();
+		existinSalary.setEid(salary.getEid());
+		existinSalary.setMonth(salary.getMonth());
+		existinSalary.setYear(salary.getYear());
+		existinSalary.setJob(salary.getJob());
+		existinSalary.setBasic(salary.getBasic());
+		existinSalary.setBonus(salary.getBonus());
+		existinSalary.setOt(salary.getOt());
+		
+		existinSalary.setEtf(salary.getBasic()*12/100);
+		existinSalary.setEpf(salary.getBasic()*8/100);
+		existinSalary.setTotal((salary.getBasic())+(salary.getOt())+(salary.getBonus())-(salary.getBasic()*12/100)-(salary.getBasic()*8/100));
+		
+		return salaryripositary.save(existinSalary);
 	}
 	
 	
@@ -69,12 +82,40 @@ public class SalaryController {
 		existinSalary.setBasic(salary.getBasic());
 		existinSalary.setBonus(salary.getBonus());
 		existinSalary.setOt(salary.getOt());
-		existinSalary.setEtf(salary.getEtf());
-		existinSalary.setEpf(salary.getEpf());
-		existinSalary.setTotal(salary.getTotal());
+		//existinSalary.setEtf(salary.getEtf());
+		//existinSalary.setEpf(salary.getEpf());
+		//existinSalary.setTotal(salary.getTotal());
+		existinSalary.setEtf(salary.getBasic()*12/100);
+		existinSalary.setEpf(salary.getBasic()*8/100);
+		existinSalary.setTotal((salary.getBasic())+(salary.getOt())+(salary.getBonus())-(salary.getBasic()*12/100)-(salary.getBasic()*8/100));
+		
 		Salary updated = salaryripositary.save(existinSalary);
 		return ResponseEntity.ok(updated);
 		
+	}
+	@GetMapping("/salarysearch/{month}/{year}")
+	public List <Salary> searchbydate(@PathVariable String month, @PathVariable Long year) {
+		
+		return salaryripositary.searchsalary(month, year);
+	}
+	
+	@GetMapping("/salarysum/{month}/{year}")
+	public Salary monthlySum(@PathVariable String month, @PathVariable Long year) {
+		
+		Salary existinSalary = new Salary();
+		
+		existinSalary.setEid("EID");
+		existinSalary.setMonth(month);
+		existinSalary.setYear(year);
+		existinSalary.setJob("job");
+		existinSalary.setBasic(salaryripositary.basicSum(month, year));
+		existinSalary.setBonus(salaryripositary.bonusSum(month, year));
+		existinSalary.setOt(salaryripositary.otSum(month, year));
+		existinSalary.setEtf(salaryripositary.etfSum(month, year));
+		existinSalary.setEpf(salaryripositary.epfSum(month, year));
+		existinSalary.setTotal(salaryripositary.totalSum(month, year));
+		
+		return existinSalary;
 	}
 	
 }
