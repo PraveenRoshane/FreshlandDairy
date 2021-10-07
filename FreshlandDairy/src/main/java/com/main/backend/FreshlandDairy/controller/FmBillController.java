@@ -1,4 +1,6 @@
 package com.main.backend.FreshlandDairy.controller;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +49,43 @@ public class FmBillController {
 	
 	@PostMapping("/bills")
 	public FmBillDetails createBill ( @RequestBody FmBillDetails bill){
-	//public ResponseEntity <Void> createBill ( @RequestBody Bill bill){	
+		FmBillDetails existinBill = new FmBillDetails();
 		
-		return billrepositary.save(bill);
+		existinBill.setDiscription(bill.getDiscription());
+		existinBill.setAmount(bill.getAmount());
+		existinBill.setBillDate(bill.getBillDate());
+		
+		
+		DateFormat dateFormat = new SimpleDateFormat("YYYY-DD-MM");
+		String strDate = dateFormat.format(bill.getBillDate());
+		
+		String dateParts[] = strDate.split("-");
+		 
+        
+        String month = dateParts[2];
+        String year = dateParts[0];
+        
+        String monthString;
+        switch (month) {
+            case "01":  monthString = "january";       break;
+            case "02":  monthString = "february";      break;
+            case "03":  monthString = "march";         break;
+            case "04":  monthString = "april";         break;
+            case "05":  monthString = "may";           break;
+            case "06":  monthString = "june";          break;
+            case "07":  monthString = "july";          break;
+            case "08":  monthString = "august";        break;
+            case "09":  monthString = "september";     break;
+            case "10": monthString = "october";       break;
+            case "11": monthString = "november";      break;
+            case "12": monthString = "december";      break;
+            default: monthString = "Invalid month"; break;
+        }
+		
+        existinBill.setBillmonth(monthString);
+        existinBill.setBillyear(year);
+		existinBill.setBillType(bill.getBillType());
+		return billrepositary.save(existinBill);
 		
 	}
 	
@@ -71,16 +107,132 @@ public class FmBillController {
 	
 	@PutMapping("/bills/{id}")
 	public ResponseEntity <FmBillDetails> updateBill (@PathVariable long id, @RequestBody FmBillDetails bill){
-		//Bill billupdated = billrepositary.save(bill);
-		//return new ResponseEntity <Bill> (bill, HttpStatus.OK);
+		
 		FmBillDetails existinBill = billrepositary.findById(id).orElseThrow(() -> new FmBillExeption("user not found"));
 		
 		existinBill.setDiscription(bill.getDiscription());
 		existinBill.setAmount(bill.getAmount());
 		existinBill.setBillDate(bill.getBillDate());
+		
+		DateFormat dateFormat = new SimpleDateFormat("YYYY-DD-MM");
+		String strDate = dateFormat.format(bill.getBillDate());
+		
+		String dateParts[] = strDate.split("-");
+		 
+        
+        String month = dateParts[2];
+        String year = dateParts[0];
+        
+        String monthString;
+        switch (month) {
+            case "01":  monthString = "january";       break;
+            case "02":  monthString = "february";      break;
+            case "03":  monthString = "march";         break;
+            case "04":  monthString = "april";         break;
+            case "05":  monthString = "may";           break;
+            case "06":  monthString = "june";          break;
+            case "07":  monthString = "july";          break;
+            case "08":  monthString = "august";        break;
+            case "09":  monthString = "september";     break;
+            case "10": monthString = "october";       break;
+            case "11": monthString = "november";      break;
+            case "12": monthString = "december";      break;
+            default: monthString = "Invalid month"; break;
+        }
+		
+        existinBill.setBillmonth(monthString);
+        existinBill.setBillyear(year);
+		existinBill.setBillType(bill.getBillType());
+		
+		
+		
 		existinBill.setBillType(bill.getBillType());
 		FmBillDetails updated = billrepositary.save(existinBill);
 		return ResponseEntity.ok(updated);
+	}
+	
+	@GetMapping("/bills/search/{searchTerm}")
+	public List <FmBillDetails> searchBills(@PathVariable String searchTerm) {
+		String dateParts[] = searchTerm.split("-");
+		 
+        
+        String month = dateParts[1];
+        String year = dateParts[0];
+        
+        String monthString;
+        switch (month) {
+            case "01":  monthString = "january";       break;
+            case "02":  monthString = "february";      break;
+            case "03":  monthString = "march";         break;
+            case "04":  monthString = "april";         break;
+            case "05":  monthString = "may";           break;
+            case "06":  monthString = "june";          break;
+            case "07":  monthString = "july";          break;
+            case "08":  monthString = "august";        break;
+            case "09":  monthString = "september";     break;
+            case "10": monthString = "october";       break;
+            case "11": monthString = "november";      break;
+            case "12": monthString = "december";      break;
+            default: monthString = "Invalid month"; break;
+        }
+		
+		return billrepositary.getarreybyDate(monthString, year);
+	}
+	
+	@GetMapping("/bills/search/count/{searchTerm}")
+	public int searchBillcount(@PathVariable String searchTerm) {
+		String dateParts[] = searchTerm.split("-");
+		 
+        
+        String month = dateParts[1];
+        String year = dateParts[0];
+        
+        String monthString;
+        switch (month) {
+            case "01":  monthString = "january";       break;
+            case "02":  monthString = "february";      break;
+            case "03":  monthString = "march";         break;
+            case "04":  monthString = "april";         break;
+            case "05":  monthString = "may";           break;
+            case "06":  monthString = "june";          break;
+            case "07":  monthString = "july";          break;
+            case "08":  monthString = "august";        break;
+            case "09":  monthString = "september";     break;
+            case "10": monthString = "october";       break;
+            case "11": monthString = "november";      break;
+            case "12": monthString = "december";      break;
+            default: monthString = "Invalid month"; break;
+        }
+		
+		return billrepositary.getCountbyDate(monthString, year);
+	}
+	
+	@GetMapping("/bills/search/sum/{searchTerm}")
+	public double searchBillSum(@PathVariable String searchTerm) {
+		String dateParts[] = searchTerm.split("-");
+		 
+        
+        String month = dateParts[1];
+        String year = dateParts[0];
+        
+        String monthString;
+        switch (month) {
+            case "01":  monthString = "january";       break;
+            case "02":  monthString = "february";      break;
+            case "03":  monthString = "march";         break;
+            case "04":  monthString = "april";         break;
+            case "05":  monthString = "may";           break;
+            case "06":  monthString = "june";          break;
+            case "07":  monthString = "july";          break;
+            case "08":  monthString = "august";        break;
+            case "09":  monthString = "september";     break;
+            case "10": monthString = "october";       break;
+            case "11": monthString = "november";      break;
+            case "12": monthString = "december";      break;
+            default: monthString = "Invalid month"; break;
+        }
+		
+		return billrepositary.getSumbyDate(monthString, year);
 	}
 	
 

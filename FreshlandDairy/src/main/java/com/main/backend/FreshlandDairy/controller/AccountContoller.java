@@ -85,9 +85,9 @@ public class AccountContoller {
 	
 	
 	@GetMapping("/makesalaryaccount/{month}/{year}")
-	public Account searchbydate(@PathVariable String month, @PathVariable Long year) {
+	public Account makesalaryaccount(@PathVariable String month, @PathVariable Long year) {
 		
-		int countcheching = accountripositary.searchsalarycount(month, year, "salary");
+		int countcheching = accountripositary.searchAccountcount(month, year, "salary");
 		
 		Account existinAccount = new Account();
 		
@@ -100,6 +100,54 @@ public class AccountContoller {
 		existinAccount.setDepartment("salary");
 		existinAccount.setMonth(month);
 		existinAccount.setYear(year);
+		
+		if ((countcheching <1)&&(total != 0)) {
+			
+		accountripositary.save(existinAccount);
+			
+		}
+		
+		
+		return existinAccount;
+	}
+	
+	@GetMapping("/makeBillaccount/{month}")
+	public Account makeBillaccount(@PathVariable String month) {
+		
+		String dateParts[] = month.split("-");
+		 
+        
+        String tmonth = dateParts[1];
+        String year = dateParts[0];
+        
+        String monthString;
+        switch (tmonth) {
+            case "01":  monthString = "january";       break;
+            case "02":  monthString = "february";      break;
+            case "03":  monthString = "march";         break;
+            case "04":  monthString = "april";         break;
+            case "05":  monthString = "may";           break;
+            case "06":  monthString = "june";          break;
+            case "07":  monthString = "july";          break;
+            case "08":  monthString = "august";        break;
+            case "09":  monthString = "september";     break;
+            case "10": monthString = "october";       break;
+            case "11": monthString = "november";      break;
+            case "12": monthString = "december";      break;
+            default: monthString = "Invalid month"; break;
+        }
+        
+		int countcheching = accountripositary.searchAccountcount(monthString, (long) 2021, "Finance Bills");
+		
+		Account existinAccount = new Account();
+		
+		double total = accountripositary.billSum(monthString, year);
+		
+		existinAccount.setAccountType("Expence");
+		existinAccount.setAmount(total);
+		existinAccount.setDepartment("Finance Bills");
+		existinAccount.setMonth(monthString);
+		existinAccount.setYear(Long.parseLong(year));
 		
 		if ((countcheching <1)&&(total != 0)) {
 			

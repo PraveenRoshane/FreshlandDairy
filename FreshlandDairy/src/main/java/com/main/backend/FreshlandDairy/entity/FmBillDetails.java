@@ -31,7 +31,12 @@ public class FmBillDetails {
 	
 	@Column(name = "BillType")
 	private String billType;
-	//private boolean isdone;
+
+	@Column(name = "billmonth")
+	private String billmonth;
+	
+	@Column(name = "billyear")
+	private String billyear;
 	
 	
 	public FmBillDetails() {
@@ -39,13 +44,23 @@ public class FmBillDetails {
 	}
 
 	
-	public FmBillDetails(String discription, double amount, Date billDate, String billType) {
-	super();
-	//this.id = id;
-	this.discription = discription;
-	this.amount = amount;
-	this.billDate = billDate;
-	this.billType = billType;
+//	public FmBillDetails(String discription, double amount, Date billDate, String billType) {
+//	super();
+//	//this.id = id;
+//	this.discription = discription;
+//	this.amount = amount;
+//	this.billDate = billDate;
+//	this.billType = billType;
+//	}
+	public FmBillDetails(String discription, double amount, Date billDate, String billType, String billmonth,
+			String billyear) {
+		super();
+		this.discription = discription;
+		this.amount = amount;
+		this.billDate = billDate;
+		this.billType = billType;
+		this.billmonth = billmonth;
+		this.billyear = billyear;
 	}
 
 	
@@ -54,6 +69,27 @@ public class FmBillDetails {
 	}
 	
 	
+
+	public String getBillmonth() {
+		return billmonth;
+	}
+
+
+	public void setBillmonth(String billmonth) {
+		this.billmonth = billmonth;
+	}
+
+
+	public String getBillyear() {
+		return billyear;
+	}
+
+
+	public void setBillyear(String billyear) {
+		this.billyear = billyear;
+	}
+
+
 	public void setId(long id) {
 		this.id = id;
 	}
