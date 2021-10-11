@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.main.backend.FreshlandDairy.entity.NewBill;
+import com.main.backend.FreshlandDairy.exception.ResourceNotFoundException;
 import com.main.backend.FreshlandDairy.repository.NewBillRepository;
 
 
@@ -68,16 +70,16 @@ public class NewBillController {
 	@PutMapping("/bill/{id}")
 	public ResponseEntity<NewBill> updateBill(@PathVariable Long id, @RequestBody NewBill bill) {
 		
-		NewBill newbill = newbillrep.save(bill);
-
-		return new ResponseEntity<NewBill>(newbill, HttpStatus.OK);
+		NewBill newbill = newbillrep.findById(id)
+				.orElseThrow(( )-> new ResourceNotFoundException("bill not exist with id :" + id));
+		
+		newbill.setDate(bill.getDate());
+		newbill.setcName(bill.getcName());
+		
+		NewBill bb = newbillrep.save(newbill);
+		return ResponseEntity.ok(bb);
+		
 	}
 	
 	
 }
-
-
-
-
-
-
